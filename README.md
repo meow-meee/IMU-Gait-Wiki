@@ -1,6 +1,6 @@
 # IMU 步態分析 LLM Wiki
 
-本專案是面向完全沒有基礎的讀者的繁體中文教學 Wiki，涵蓋 IMU 原理、三軸與人體運動方向、步態週期、IMU 資料處理及應用。**目前僅完成專案規則與資料夾骨架，尚未 ingest 原始資料。**
+本專案是面向完全沒有基礎的讀者的繁體中文教學 Wiki，涵蓋 IMU 原理、三軸與人體運動方向、步態週期、IMU 資料處理及應用。**已分批匯入 5 份來源。** 目前內容與待查證事項見 [Wiki 索引](wiki/index.md)，檢查結果見 [檢查紀錄](reports/check-log.md)。
 
 ## 目錄
 
@@ -13,7 +13,7 @@ IMU-Gait-Wiki/
 │   ├── index.md              # Wiki 首頁與單元索引
 │   ├── sources.md            # 資料來源清單
 │   ├── log.md                # 每批 ingest 紀錄
-│   └── topics/               # 五個單元的 Wiki 文章（待 ingest 後產生）
+│   └── topics/               # 五個單元的 Wiki 文章
 ├── cards/                    # 證據卡（待產生）
 ├── drafts/                   # 逐頁簡報草稿（待產生）
 ├── reports/
@@ -26,12 +26,8 @@ IMU-Gait-Wiki/
 └── deck.html                 # 最終教學簡報（待產生）
 ```
 
-## 下一階段：分批 ingest
+## 資料來源與本機版本紀錄
 
-1. 先蒐集 3 篇學術論文、2 份官方技術文件，確認可讀且適用。
-2. 將首批 1–2 份原始資料放入 `raw/`，請 Coding Agent 遵守 `AGENTS.md` 讀取並整理。
-3. 檢查來源紀錄、頁碼、知識點與引用後，更新 Wiki 及 ingest 日誌。
-4. 第一批成功後，執行 `git add .` 和 `git commit -m "first ingest"`；其餘資料依序進行。
-5. 五份資料完成後才進行 Graph 的證據卡、教學大綱與 HTML 簡報階段。
+來源包含 3 篇學術論文及 2 份官方技術文件，書目、DOI 或官方來源網址見 [來源登錄表](wiki/sources.md)。每批的處理順序與結果見 [匯入日誌](wiki/log.md)。
 
-**注意**：`README.md`、`wiki/index.md` 的單元標題目前只代表規劃，並非已完成驗證的內容。
+原始 PDF 保留在本機的 `raw/`，Git 只追蹤該目錄的 `.gitkeep`。HTML 簡報尚未生成。
