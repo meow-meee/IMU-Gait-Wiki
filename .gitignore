@@ -1,0 +1,3 @@
+# Keep original source documents local.
+/raw/*
+!/raw/.gitkeep
