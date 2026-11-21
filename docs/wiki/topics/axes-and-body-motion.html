@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三軸與人體運動方向</title>
+<link rel="stylesheet" href="../../assets/pages.css">
+</head>
+<body>
+<nav aria-label="網站導覽"><a href="../../deck.html">教學簡報</a><a href="../index.html">Wiki 主題</a><a href="../sources.html">來源登錄表</a></nav>
+<main>
+<h1>三軸與人體運動方向</h1>
+<h2>簡明說明</h2>
+<p>感測器座標系（sensor coordinate system）的 X、Y、Z 是裝置的方向。人體節段座標系（body segment coordinate system）則以骨盆或腿部等身體節段定義方向。S02 用感測器到人體節段的校正，把兩套方向對應起來。 <span id="S02-p4-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span> <span id="S02-p5-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span></p>
+<h2>核心概念</h2>
+<p>人體前後方向（anteroposterior direction）與左右方向（mediolateral direction）可用來描述研究選取的訊號。S01 彙整的例子包含以前後方向加速度或左右軸角速度偵測步態事件。 <span id="S01-p17-1" class="ref-target"><a class="citation" href="../sources.html#S01">[S01, p. 17]</a></span></p>
+<p>ISM330DLC 對 X、Y、Z 分別輸出加速度與角速度。這些通道是裝置座標，安裝後仍需確認如何對應人體節段。 <span id="S04-p28-1" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 28]</a></span> <span id="S02-p5-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span></p>
+<h2>初學者例子</h2>
+<p>S02 將骨盆模型的 X 軸定義為位於矢狀面（sagittal plane）且向前，再對該方向做濾波，估計行走方向。這個 X 軸代表該研究的骨盆模型設定。 <span id="S02-p5-3" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span> <span id="S02-p6-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 6]</a></span></p>
+<p>S05 的靜態例子把 X、Y 軸放在水平面，Z 軸與水平面垂直。在這個參考姿勢下，理想通道讀值為 X、Y 各 0 g，Z 為 1 g。傾斜後，同一重力向量在各軸上的分量會改變。 <span id="S05-p1-1" class="ref-target"><a class="citation" href="../sources.html#S05">[S05, p. 1]</a></span> <span id="S05-p7-1" class="ref-target"><a class="citation" href="../sources.html#S05">[S05, p. 7]</a></span></p>
+<h2>注意事項</h2>
+<p>實作時需按所用裝置與安裝方式確認軸向，並核對感測器到人體節段的校正。 <span id="S02-p4-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span> <span id="S02-p5-4" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span></p>
+<p><strong>待查證</strong>：額狀面（frontal plane）與橫斷面（transverse plane）的初學者圖解，以及個別裝置的 X／Y／Z 軸對照。</p>
+<h2>引用來源</h2>
+<p><a href="../sources.html">來源登錄表</a>（S01、S02、S04、S05）。</p>
+
+</main>
+</body>
+</html>

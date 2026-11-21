@@ -1,0 +1,18 @@
+:root { color-scheme: light; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; color: #102b27; background: #f4f2eb; }
+* { box-sizing: border-box; }
+body { margin: 0 auto; max-width: 74rem; padding: clamp(1rem, 4vw, 3rem); line-height: 1.65; }
+nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; margin-bottom: 1rem; }
+main { padding: clamp(1rem, 4vw, 3rem); background: #fdfcf7; border: 1px solid #b9cec3; border-top: 5px solid #165c4c; border-radius: 1rem; overflow-wrap: anywhere; }
+h1 { font-size: clamp(1.6rem, 4vw, 2.65rem); line-height: 1.3; margin-top: 0; }
+h2, h3 { line-height: 1.4; }
+a { color: #155645; text-underline-offset: 0.19em; }
+a:focus-visible, .table-scroll:focus-visible { outline: 3px solid #a66513; outline-offset: 3px; }
+.start { display: inline-block; border-radius: 0.5rem; color: white; background: #165c4c; padding: 0.55rem 0.9rem; font-weight: bold; }
+blockquote { margin-inline: 0; padding-inline-start: 0.9rem; border-inline-start: 3px solid #86ae9e; }
+.table-scroll { max-width: 100%; overflow-x: auto; }
+table { width: 100%; min-width: 35rem; border-collapse: collapse; }
+th, td { padding: 0.6rem; border: 1px solid #b9cec3; text-align: left; vertical-align: top; }
+th { background: #e1eee5; }
+.ref-target { scroll-margin-top: 1rem; }
+.ref-target:target { background: #f4d783; outline: 2px solid #a66513; outline-offset: 0.12em; }
+.citation { white-space: nowrap; }

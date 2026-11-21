@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IMU 基本介紹</title>
+<link rel="stylesheet" href="../../assets/pages.css">
+</head>
+<body>
+<nav aria-label="網站導覽"><a href="../../deck.html">教學簡報</a><a href="../index.html">Wiki 主題</a><a href="../sources.html">來源登錄表</a></nav>
+<main>
+<h1>IMU 基本介紹</h1>
+<h2>簡明說明</h2>
+<p>慣性測量單元（Inertial Measurement Unit, IMU）可固定在身體上，記錄用於推估動作的訊號。S02 的系統結合加速度計（accelerometer）與陀螺儀（gyroscope）的資料來估計下肢各節段的運動。 <span id="S02-p4-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span></p>
+<h2>核心概念</h2>
+<ul>
+<li><p>加速度計的訊號可用來分析某一方向的加速度，也會受到重力影響。陀螺儀量測角速度（angular velocity），也就是轉動的快慢。 <span id="S01-p17-1" class="ref-target"><a class="citation" href="../sources.html#S01">[S01, p. 17]</a></span></p>
+</li>
+<li><p>S01 討論可搭配磁力計（magnetometer）的裝置。S02 的估算方法則融合加速度計與陀螺儀資料，並運用人體模型與地面接觸約束。 <span id="S01-p3-1" class="ref-target"><a class="citation" href="../sources.html#S01">[S01, p. 3]</a></span> <span id="S02-p4-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span></p>
+</li>
+<li><p>ISM330DLC 是一個將三軸數位加速度計與三軸數位陀螺儀放在同一封裝的例子。兩種感測器各自有可選的滿量程（full scale），也就是裝置設定的量測範圍。 <span id="S04-p1-1" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 1]</a></span></p>
+</li>
+<li><p>在近乎靜止、重力主導訊號時，加速度計可協助估計靜態傾角（static inclination）。用陀螺儀的角速度隨時間累加也可估角度，但零點偏差會隨累加時間放大。 <span id="S05-p1-1" class="ref-target"><a class="citation" href="../sources.html#S05">[S05, p. 1]</a></span></p>
+</li>
+</ul>
+<h2>初學者例子</h2>
+<p>S02 把感測器固定在骨盆和兩側大腿、小腿、足部，用多個部位的訊號推估下肢運動。 <span id="S02-p3-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 3]</a></span> <span id="S02-p4-3" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span></p>
+<h2>注意事項</h2>
+<p>固定位置和軟組織晃動可能影響量測。漂移（drift）會使追蹤誤差隨時間累積。 <span id="S01-p3-2" class="ref-target"><a class="citation" href="../sources.html#S01">[S01, p. 3]</a></span></p>
+<p>S03 的即時步態偵測回顧中，小腿與足部是常選的 IMU 位置。這項觀察反映該回顧的研究範圍。 <span id="S03-p1-1" class="ref-target"><a class="citation" href="../sources.html#S03">[S03, p. 1]</a></span> <span id="S03-p20-1" class="ref-target"><a class="citation" href="../sources.html#S03">[S03, p. 20]</a></span></p>
+<h2>引用來源</h2>
+<p><a href="../sources.html">來源登錄表</a>（S01、S02、S03、S04、S05）。</p>
+
+</main>
+</body>
+</html>

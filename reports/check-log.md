@@ -56,3 +56,18 @@
 反思：按受影響的頁面保留首次語意檢查結果，讓修正範圍可從證據卡一路比對至 HTML。Render 的標題行框影響最多頁面，桌面尺寸的標題字級最高，第一次加高行框後仍需在該尺寸複測。既有 Graph 退回路徑適用，無流程變更。
 
 停止條件：所有已執行的交付檢查通過。額狀面／橫斷面圖解、實際裝置軸向、其他裝置的取樣濾波設定、跌倒風險與臨床／日常環境外推仍沿用 Wiki 的待查證狀態。瀏覽器測試涵蓋上述 Chrome 視窗，未進行實體手機或跨瀏覽器測試。
+
+## 2026-11-21｜GitHub Pages 本機部署準備
+
+| 檢查 | 實際結果 |
+|---|---|
+| 初版連結 | `deck.html` 的引用指向 Markdown 主題檔，無段落錨點；證據卡、來源表和索引也指向 Markdown。來源表含本機 raw PDF 連結，PDF 不屬於發布目錄。 |
+| 站點結構 | `docs/index.html` 是入口，連至 `docs/deck.html`。同一發布樹有五個 Wiki 主題、索引、來源表、匯入日誌、十份 HTML 證據卡、樣式與 `.nojekyll`。未將原始 PDF、Markdown、草稿或檢查紀錄放入發布樹。 |
+| 首次瀏覽器測試 | Chrome 在沙箱中開啟 127.0.0.1 時回報 `ERR_NETWORK_ACCESS_DENIED`，因此第一次未完成網頁導覽驗證。 |
+| 子路徑複測 | 核准本機網路測試權限後，以 Chrome／Playwright 及本機 HTTP 模擬 `/imu-gait-wiki/`。入口、十張證據卡、48 條完整引用鏈、59 個相異本機連結目的均通過。每條引用都核對 Wiki 錨點的來源 ID 與頁碼，並從錨點點進來源登錄列。 |
+| 操作與顯示 | 在手機寬度 390 px 開啟所有 HTML 頁面，通過整頁水平溢出檢查；來源表可在容器內橫向捲動。簡報按鈕、方向鍵與頁碼通過。另從原專案根目錄以 `file://` 開啟簡報並點擊引用，成功到達對應的 HTML 段落。 |
+| 外部來源 | 確認五個公開目的地可開啟。S01、S02 的 DOI 轉址在 Web 檢查工具中未能開啟，發布版保留三篇論文的 DOI 顯示文字並連到已核對的 MDPI 出版頁。S04、S05 保留官方文件連結。 |
+| 原始內容 | Wiki、證據卡與草稿的原始 Markdown 均保留。簡報相較於上一版只更換連結目的地。以相同輸入重新生成後，輸出雜湊一致。 |
+| 尚未測試 | 未推送或設定 GitHub 遠端，尚未驗證實際 GitHub Pages 建置、公開網址、DNS／HTTPS 或實體手機。外部目的地使用 Web 工具核對，未從實際 Pages 網址測試。 |
+
+部署依據：[GitHub Pages 發布來源設定](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。

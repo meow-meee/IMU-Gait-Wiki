@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IMU 資料處理</title>
+<link rel="stylesheet" href="../../assets/pages.css">
+</head>
+<body>
+<nav aria-label="網站導覽"><a href="../../deck.html">教學簡報</a><a href="../index.html">Wiki 主題</a><a href="../sources.html">來源登錄表</a></nav>
+<main>
+<h1>IMU 資料處理</h1>
+<h2>簡明說明</h2>
+<p>以 S02 為例，流程是校正與同步取樣、估計下肢運動、找出步態事件，再用事件時間和估計的腳部位置計算步態參數。 <span id="S02-p4-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span> <span id="S02-p5-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span> <span id="S02-p6-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 6]</a></span> <span id="S02-p7-1" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 7]</a></span></p>
+<h2>核心概念</h2>
+<ol>
+<li><strong>擷取與校正</strong>：S02 在步行測試前做兩種站姿的校正，並把 IMU 與光學動作捕捉（optical motion capture, OMC）資料同步，以每秒 60 次取樣。 <span id="S02-p4-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span></li>
+<li><strong>估計與濾波</strong>：把感測器訊號和人體模型結合，估計節段運動。研究對骨盆向前的方向做濾波（filtering），減輕小幅轉動對行走方向估計的影響。 <span id="S02-p4-3" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span> <span id="S02-p5-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span> <span id="S02-p6-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 6]</a></span></li>
+<li><strong>偵測與換算</strong>：在估計的行走方向上，找出腳跟相對骨盆的前向位置峰值來估計初始接觸，並用足前部標記相對骨盆的後向極值估計末端接觸。再由這些事件和腳部位置計算步態參數。 <span id="S02-p5-3" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span> <span id="S02-p6-3" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 6]</a></span> <span id="S02-p7-2" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 7]</a></span></li>
+</ol>
+<h3>其他裝置與方法</h3>
+<ul>
+<li><p>輸出資料率（output data rate, ODR）是裝置每秒輸出的資料更新頻率。ISM330DLC 的加速度計與陀螺儀各有資料率選項，晶片內也有依模式而異的濾波路徑。 <span id="S04-p10-1" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 10]</a></span> <span id="S04-p11-1" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 11]</a></span> <span id="S04-p13-1" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 13]</a></span> <span id="S04-p17-1" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 17]</a></span></p>
+</li>
+<li><p>S03 回顧常見的即時規則法，例如訊號跨過門檻或出現峰值時再判斷事件。用來驗證事件的參考之一是鞋墊壓力感測器（insole pressure sensor）。 <span id="S03-p1-1" class="ref-target"><a class="citation" href="../sources.html#S03">[S03, p. 1]</a></span> <span id="S03-p13-1" class="ref-target"><a class="citation" href="../sources.html#S03">[S03, p. 13]</a></span> <span id="S03-p20-1" class="ref-target"><a class="citation" href="../sources.html#S03">[S03, p. 20]</a></span></p>
+</li>
+<li><p>S05 以已知的重力方向校正加速度計，說明如何處理零點偏移（offset）及靈敏度差異（sensitivity mismatch）。每軸取兩個已知重力投影的量測點，可同時估計偏移與比例。 <span id="S05-p7-1" class="ref-target"><a class="citation" href="../sources.html#S05">[S05, p. 7]</a></span> <span id="S05-p8-1" class="ref-target"><a class="citation" href="../sources.html#S05">[S05, p. 8]</a></span></p>
+</li>
+</ul>
+<h2>初學者例子</h2>
+<p>想像把腳跟和骨盆的相對位置畫成一條隨時間起伏的曲線。這個方法會在腳跟向前伸得最遠的位置尋找初始接觸的候選點。 <span id="S02-p5-4" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 5]</a></span> <span id="S02-p6-4" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 6]</a></span></p>
+<h2>注意事項</h2>
+<p>S01 指出固定位置及軟組織晃動可引入雜訊（noise）。S02 的取樣率、校正與事件判定都屬於該研究設定。 <span id="S01-p3-1" class="ref-target"><a class="citation" href="../sources.html#S01">[S01, p. 3]</a></span> <span id="S02-p4-4" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span> <span id="S02-p6-5" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 6]</a></span> <span id="S02-p7-3" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 7]</a></span></p>
+<p><strong>待查證</strong>：其他裝置或行走情境適用的取樣率與濾波設定。</p>
+<p>S04 提供特定晶片可選的資料率與濾波路徑。S02 的 60 Hz 是其步行實驗的記錄設定，適合其他裝置或步態任務的組合仍待查證。 <span id="S02-p4-5" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span> <span id="S04-p10-2" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 10]</a></span> <span id="S04-p13-2" class="ref-target"><a class="citation" href="../sources.html#S04">[S04, p. 13]</a></span></p>
+<p>行走時的額外加速度可能混入重力分量，使靜態傾角方法產生誤差。濾波也會影響傾角輸出穩定下來的時間。S02 的步行流程另使用陀螺儀、人體模型與地面接觸約束。 <span id="S05-p1-1" class="ref-target"><a class="citation" href="../sources.html#S05">[S05, p. 1]</a></span> <span id="S02-p4-6" class="ref-target"><a class="citation" href="../sources.html#S02">[S02, p. 4]</a></span></p>
+<h2>引用來源</h2>
+<p><a href="../sources.html">來源登錄表</a>（S01、S02、S03、S04、S05）。</p>
+
+</main>
+</body>
+</html>

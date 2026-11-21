@@ -31,3 +31,11 @@ IMU-Gait-Wiki/
 來源包含 3 篇學術論文及 2 份官方技術文件，書目、DOI 或官方來源網址見 [來源登錄表](wiki/sources.md)。每批的處理順序與結果見 [匯入日誌](wiki/log.md)。
 
 原始 PDF 保留在本機的 `raw/`，Git 只追蹤該目錄的 `.gitkeep`。HTML 簡報尚未生成。
+
+## GitHub Pages
+
+已生成可直接發布的靜態站點。入口是 `docs/index.html`，從入口開啟 `docs/deck.html`，或直接進入 `docs/wiki/index.html` 瀏覽 Wiki。網站使用相對路徑，可放在 GitHub Pages 的儲存庫子路徑下。
+
+部署時，GitHub Pages 的來源選擇 **Deploy from a branch → main → /docs**。目前僅完成本機準備。此目錄的 `.nojekyll` 讓 Pages 直接提供已生成的 HTML。原始 Markdown、PDF、草稿和報告留在專案目錄，發布來源只選 `/docs`。
+
+資料更新後，可用 Node.js 與 Marked 17.0.5 重新生成頁面。執行 `node scripts/build-pages.mjs`（本機須能解析 `marked` 套件），或另傳入已安裝的 `marked.esm.js` 路徑作為第一個參數。發布時直接提供已生成的檔案，GitHub Pages 不需執行此指令。
