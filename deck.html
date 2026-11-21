@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IMU 穿戴式感測器與步態分析入門</title>
+<style>
+:root {color-scheme:light; --paper:#f4f2eb; --ink:#102b27; --muted:#385550; --accent:#165c4c; --line:#b9cec3; --card:#fdfcf7; font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;}
+*,*::before,*::after {box-sizing:border-box}
+[hidden] {display:none!important}
+body {margin:0; background:var(--paper); color:var(--ink); min-height:100vh; min-height:100dvh; display:flex; flex-direction:column;}
+main {width:min(100%,1180px); margin:auto; padding:clamp(16px,4vw,52px);}
+.slide {background:var(--card); border:1px solid var(--line); border-top:5px solid var(--accent); padding:clamp(16px,4vw,46px); border-radius:20px; overflow-wrap:anywhere;}
+.cover {background:#e1eee5; border-color:#86ae9e;}
+header {max-width:48rem; margin-bottom:clamp(16px,3vw,32px);}
+.tag {font-size:.92rem; font-weight:bold; color:var(--accent); margin:0 0 .6rem;}
+h1,h2 {font-size:clamp(1.8rem,4.3vw,3.8rem); margin:0; line-height:1.55; letter-spacing:-.025em; text-wrap:balance;}
+h1:focus,h2:focus {outline:none}
+.lead {font-size:clamp(1.04rem,2vw,1.4rem); margin:.55rem 0 0; color:var(--muted);}
+p {line-height:1.55;}
+header > p:last-child {margin-bottom:0;}
+.points {display:grid; grid-template-columns:repeat(var(--count),minmax(0,1fr)); gap:clamp(12px,2vw,20px);}
+article {border:1px solid var(--line); border-radius:14px; padding:clamp(12px,2vw,20px); background:#fffefa; min-width:0;}
+h3 {font-size:clamp(1.05rem,1.8vw,1.3rem); line-height:1.43; margin:0;}
+article p {margin:.45rem 0 0;}
+.refs,.source-links {font-size:.86rem;}
+.refs a {display:inline-block;}
+a {color:#155645; text-underline-offset:.19em;}
+.source-links {display:flex; flex-wrap:wrap; gap:.6rem 1.2rem; margin-top:1rem;}
+nav {position:sticky; bottom:0; display:flex; align-items:center; justify-content:center; gap:clamp(8px,3vw,28px); padding:10px 12px max(10px,env(safe-area-inset-bottom)); background:#112e28; color:white;}
+button {background:#f4fbf6; color:#12372c; border:1px solid transparent; border-radius:9px; font:inherit; font-weight:bold; min-height:44px; padding:0 .82rem; cursor:pointer;}
+button:disabled {cursor:default; color:#c3d1c9; background:#36564c;}
+:focus-visible {outline:3px solid #a66513; outline-offset:3px;}
+#counter {font-variant-numeric:tabular-nums; min-width:4.4em; text-align:center;}
+@media (max-width:700px) {.points {grid-template-columns:1fr;} main {margin-block:0 auto;}}
+@media (prefers-reduced-motion:reduce) {* {scroll-behavior:auto!important;}}
+</style>
+</head>
+<body>
+<main aria-label="教學簡報">
+<section class="slide cover" data-topic="imu-basics" aria-labelledby="slide-01">
+<header><p class="tag">穿戴式訊號</p><h1 id="slide-01" tabindex="-1">IMU 穿戴式感測器與步態分析入門</h1><p class="lead">走路時，感測器記下什麼？</p><p>從慣性測量單元（Inertial Measurement Unit, IMU）的訊號出發，認識步態分析（gait analysis）如何描述走路方式。</p></header>
+<div class="points" style="--count:2">
+<article><h3>戴在身上</h3><p>IMU 固定在身體上，記錄可用來推估動作的訊號。</p><p class="refs"><a href="wiki/topics/imu-basics.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a></p></article>
+<article><h3>把走路描述清楚</h3><p>步態分析可用來描述走路方式，例如觀察復健進度。</p><p class="refs"><a href="wiki/topics/applications.md" data-ref="S01:2" title="Wiki 原文與引用位置">[S01, p. 2]</a> <a href="wiki/topics/applications.md" data-ref="S02:1" title="Wiki 原文與引用位置">[S02, p. 1]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/01.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="imu-basics" aria-labelledby="slide-02" hidden>
+<header><p class="tag">IMU 基本介紹</p><h2 id="slide-02" tabindex="-1">IMU 裡的兩種感測器</h2><p class="lead">分開看移動與轉動</p></header>
+<div class="points" style="--count:3">
+<article><h3>加速度計（accelerometer）</h3><p>訊號可用來分析各方向的加速度，也會受到重力影響。</p><p class="refs"><a href="wiki/topics/imu-basics.md" data-ref="S01:17" title="Wiki 原文與引用位置">[S01, p. 17]</a></p></article>
+<article><h3>陀螺儀（gyroscope）</h3><p>量測角速度（angular velocity），也就是轉動的快慢。</p><p class="refs"><a href="wiki/topics/imu-basics.md" data-ref="S01:17" title="Wiki 原文與引用位置">[S01, p. 17]</a></p></article>
+<article><h3>晶片實例</h3><p>ISM330DLC 包含三軸數位加速度計與三軸數位陀螺儀。</p><p class="refs"><a href="wiki/topics/imu-basics.md" data-ref="S04:1" title="Wiki 原文與引用位置">[S04, p. 1]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/02.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="imu-basics" aria-labelledby="slide-03" hidden>
+<header><p class="tag">感測器原理</p><h2 id="slide-03" tabindex="-1">重力能幫忙估傾角</h2><p class="lead">想像把感測器慢慢傾斜</p></header>
+<div class="points" style="--count:3">
+<article><h3>同一個重力，不同的軸讀值</h3><p>感測器傾斜時，重力在裝置各軸上的投影會隨姿勢而變。</p><p class="refs"><a href="wiki/topics/axes-and-body-motion.md" data-ref="S05:1" title="Wiki 原文與引用位置">[S05, p. 1]</a> <a href="wiki/topics/axes-and-body-motion.md" data-ref="S05:7" title="Wiki 原文與引用位置">[S05, p. 7]</a></p></article>
+<article><h3>近乎靜止時</h3><p>重力主導訊號時，可用加速度計估計靜態傾角（static inclination）。</p><p class="refs"><a href="wiki/topics/imu-basics.md" data-ref="S05:1" title="Wiki 原文與引用位置">[S05, p. 1]</a></p></article>
+<article><h3>走動時的限制</h3><p>走路帶來的額外加速度會影響這種傾角估算。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S05:1" title="Wiki 原文與引用位置">[S05, p. 1]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/03.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="axes-and-body-motion" aria-labelledby="slide-04" hidden>
+<header><p class="tag">三軸與人體運動方向</p><h2 id="slide-04" tabindex="-1">裝置的 X 軸指向哪裡？</h2><p class="lead">先分清裝置方向與人體方向</p></header>
+<div class="points" style="--count:3">
+<article><h3>裝置方向</h3><p>感測器座標系（sensor coordinate system）的 X、Y、Z 是裝置本身的方向。</p><p class="refs"><a href="wiki/topics/axes-and-body-motion.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a> <a href="wiki/topics/axes-and-body-motion.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a></p></article>
+<article><h3>人體方向</h3><p>人體節段座標系（body segment coordinate system）以骨盆或腿部等節段定義方向。安裝後透過校正對應兩套方向。</p><p class="refs"><a href="wiki/topics/axes-and-body-motion.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a> <a href="wiki/topics/axes-and-body-motion.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a></p></article>
+<article><h3>研究例子</h3><p>S02 將骨盆模型的 X 軸定義在矢狀面（sagittal plane）內、指向前方。</p><p class="refs"><a href="wiki/topics/axes-and-body-motion.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a> <a href="wiki/topics/axes-and-body-motion.md" data-ref="S02:6" title="Wiki 原文與引用位置">[S02, p. 6]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/04.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="gait-fundamentals" aria-labelledby="slide-05" hidden>
+<header><p class="tag">步態基本概念</p><h2 id="slide-05" tabindex="-1">同一隻腳，走完一個週期</h2><p class="lead">左腳著地 → 左腳離地 → 左腳再次著地</p></header>
+<div class="points" style="--count:3">
+<article><h3>站立期（stance phase）</h3><p>從初始接觸（initial contact, IC）到末端接觸（terminal contact, TC），這隻腳和地面接觸。</p><p class="refs"><a href="wiki/topics/gait-fundamentals.md" data-ref="S01:2" title="Wiki 原文與引用位置">[S01, p. 2]</a> <a href="wiki/topics/gait-fundamentals.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+<article><h3>擺盪期（swing phase）</h3><p>從離地到同一隻腳再次著地，兩個階段合成一個步態週期（gait cycle）。</p><p class="refs"><a href="wiki/topics/gait-fundamentals.md" data-ref="S01:2" title="Wiki 原文與引用位置">[S01, p. 2]</a> <a href="wiki/topics/gait-fundamentals.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+<article><h3>如何判定初始接觸？</h3><p>在沒有步態障礙的人身上，初始接觸常是腳跟著地（heel strike, HS）。踮腳走路時也可能由腳趾先著地。</p><p class="refs"><a href="wiki/topics/gait-fundamentals.md" data-ref="S03:8" title="Wiki 原文與引用位置">[S03, p. 8]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/05.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="gait-fundamentals" aria-labelledby="slide-06" hidden>
+<header><p class="tag">步態基本概念</p><h2 id="slide-06" tabindex="-1">一步能量出哪些參數？</h2><p class="lead">距離、頻率與速度回答不同問題</p></header>
+<div class="points" style="--count:3">
+<article><h3>步長（step length）</h3><p>左右腳接續著地時，兩個腳跟位置在地面上的距離。跨步長（stride length）則看同一隻腳連續兩次著地的位置。</p><p class="refs"><a href="wiki/topics/gait-fundamentals.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+<article><h3>步頻（cadence）</h3><p>每分鐘走幾步。S02 用 60 除以單步時間（step time，以秒計）。</p><p class="refs"><a href="wiki/topics/gait-fundamentals.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+<article><h3>步速（gait speed）</h3><p>走得多快。S02 用跨步長除以跨步時間（stride time）。</p><p class="refs"><a href="wiki/topics/gait-fundamentals.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/06.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="imu-data-processing" aria-labelledby="slide-07" hidden>
+<header><p class="tag">資料蒐集</p><h2 id="slide-07" tabindex="-1">先把資料錄得可比較</h2><p class="lead">校正、同步與取樣</p></header>
+<div class="points" style="--count:3">
+<article><h3>校正與同步</h3><p>S02 在走路前以兩種站姿校正，並把 IMU 與光學動作捕捉（optical motion capture, OMC）資料對齊到同一時間基準。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a></p></article>
+<article><h3>取樣（sampling）</h3><p>S02 的實驗每秒記錄 60 次。輸出資料率（output data rate, ODR）則描述裝置每秒更新資料的頻率，硬體選項依裝置而異。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S04:10" title="Wiki 原文與引用位置">[S04, p. 10]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S04:11" title="Wiki 原文與引用位置">[S04, p. 11]</a></p></article>
+<article><h3>注意固定位置</h3><p>固定位置與軟組織晃動可能引入雜訊（noise），影響量測。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S01:3" title="Wiki 原文與引用位置">[S01, p. 3]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/07.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="imu-data-processing" aria-labelledby="slide-08" hidden>
+<header><p class="tag">訊號處理</p><h2 id="slide-08" tabindex="-1">從動作訊號找著地時機</h2><p class="lead">估計動作 → 找事件 → 算參數</p></header>
+<div class="points" style="--count:3">
+<article><h3>估計方向</h3><p>S02 把感測訊號和人體模型結合，並對骨盆的前向方向做濾波（filtering），減輕小幅轉動的影響。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:6" title="Wiki 原文與引用位置">[S02, p. 6]</a></p></article>
+<article><h3>找候選事件</h3><p>想像腳跟相對骨盆的位置畫成曲線。S02 以腳跟在行走方向上最靠前的位置作為初始接觸候選。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:6" title="Wiki 原文與引用位置">[S02, p. 6]</a></p></article>
+<article><h3>把事件變成量測值</h3><p>用事件時間與估計的腳部位置，計算步態參數。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:6" title="Wiki 原文與引用位置">[S02, p. 6]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/08.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="applications" aria-labelledby="slide-09" hidden>
+<header><p class="tag">實際應用</p><h2 id="slide-09" tabindex="-1">應用之前，先看驗證</h2><p class="lead">復健是應用情境，驗證得對準族群</p></header>
+<div class="points" style="--count:3">
+<article><h3>復健研究</h3><p>偵測即時步態事件，可用於研究何時觸發復健介入或穿戴輔具。</p><p class="refs"><a href="wiki/topics/applications.md" data-ref="S03:1" title="Wiki 原文與引用位置">[S03, p. 1]</a> <a href="wiki/topics/applications.md" data-ref="S03:20" title="Wiki 原文與引用位置">[S03, p. 20]</a></p></article>
+<article><h3>分開看每個指標</h3><p>在 S02 的健康受試者研究中，步寬（step width）和擺盪寬度（swing width）的相對誤差比步頻高。</p><p class="refs"><a href="wiki/topics/applications.md" data-ref="S02:3" title="Wiki 原文與引用位置">[S02, p. 3]</a> <a href="wiki/topics/applications.md" data-ref="S02:9" title="Wiki 原文與引用位置">[S02, p. 9]</a></p></article>
+<article><h3>驗證目標族群</h3><p>S03 指出，臨床研究要在目標族群與相關情境中驗證，例如受試者使用不同助行器時。</p><p class="refs"><a href="wiki/topics/applications.md" data-ref="S03:20" title="Wiki 原文與引用位置">[S03, p. 20]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/09.md">本頁證據卡</a></footer>
+</section>
+<section class="slide" data-topic="applications" aria-labelledby="slide-10" hidden>
+<header><p class="tag">複習與來源</p><h2 id="slide-10" tabindex="-1">從訊號到可解讀的步態參數</h2><p class="lead">複習三個問題</p></header>
+<div class="points" style="--count:3">
+<article><h3>量到了什麼？</h3><p>先辨認加速度與角速度。</p><p class="refs"><a href="wiki/topics/imu-basics.md" data-ref="S01:17" title="Wiki 原文與引用位置">[S01, p. 17]</a></p></article>
+<article><h3>怎麼推估走路？</h3><p>用估計的腳部位置和著地、離地事件計算步態參數。</p><p class="refs"><a href="wiki/topics/imu-data-processing.md" data-ref="S02:4" title="Wiki 原文與引用位置">[S02, p. 4]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:5" title="Wiki 原文與引用位置">[S02, p. 5]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:6" title="Wiki 原文與引用位置">[S02, p. 6]</a> <a href="wiki/topics/imu-data-processing.md" data-ref="S02:7" title="Wiki 原文與引用位置">[S02, p. 7]</a></p></article>
+<article><h3>結果適用於誰？</h3><p>查看研究驗證的族群與情境，再解讀結果。</p><p class="refs"><a href="wiki/topics/applications.md" data-ref="S03:20" title="Wiki 原文與引用位置">[S03, p. 20]</a></p></article>
+</div>
+<footer class="source-links"><a href="cards/10.md">本頁證據卡</a> <a href="wiki/sources.md">S01–S05 來源登錄表</a> <a href="wiki/index.md">Wiki 主題索引</a></footer>
+</section>
+
+<noscript><p>請啟用 JavaScript 以使用簡報翻頁。</p></noscript>
+</main>
+<nav aria-label="簡報翻頁">
+<button type="button" id="prev" disabled>← 上一頁</button>
+<span id="counter" aria-live="polite" aria-atomic="true">1 / 10</span>
+<button type="button" id="next">下一頁 →</button>
+</nav>
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+const previous = document.querySelector('#prev');
+const next = document.querySelector('#next');
+const counter = document.querySelector('#counter');
+let current = 0;
+
+function showSlide(index) {
+  if (index < 0 || index >= slides.length || index === current) return;
+  slides[current].hidden = true;
+  current = index;
+  const active = slides[current];
+  active.hidden = false;
+  previous.disabled = current === 0;
+  next.disabled = current === slides.length - 1;
+  counter.textContent = `${current + 1} / ${slides.length}`;
+  active.querySelector('h1, h2').focus({ preventScroll: true });
+  window.scrollTo(0, 0);
+}
+
+previous.addEventListener('click', () => showSlide(current - 1));
+next.addEventListener('click', () => showSlide(current + 1));
+document.addEventListener('keydown', (event) => {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    event.preventDefault();
+    showSlide(current + (event.key === 'ArrowLeft' ? -1 : 1));
+  }
+});
+</script>
+</body>
+</html>
